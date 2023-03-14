@@ -22,33 +22,19 @@ def resolution() -> Screen_resolution:
 
 def get_coordinates(cap,hands) -> Coordinates:
     """Return coordinates finger"""
-    _, img = cap.read()
-    w, h = pag.size()
-    scale = w/img.shape[1]
-    result = hands.process(cv2.resize(cv2.flip(img, 1), dsize=[int(img.shape[1]/2), int(img.shape[0]/2)]))
-    if result.multi_hand_landmarks:
 
-<<<<<<< HEAD
-        for id, lm in enumerate( result.multi_hand_landmarks[0].landmark):
-            cx,cy = int((lm.x* w)), int((lm.y * h))
-            #cv2.circle(img, (cx,cy), 3, (255, 0, 255))
-            if id==8:
-                return Coordinates(**{"for_x": cx, "for_y":cy })
-    #cv2.imshow("Hand treaking", img)
-=======
-    _, img = cap.read()
-    h,w = pag.size()
-    result = hands.process(cv2.resize(cv2.flip(img, 1), dsize=[int(img.shape[1]/4), int(img.shape[0]/4)]))
-    #result = hands.process(img)
-    if result.multi_hand_landmarks:
+    while True:
+        _, img = cap.read()
+        result = hands.process(cv2.resize(cv2.flip(img, 1), resolution()))
+        #result = hands.process(img)
+        if result.multi_hand_landmarks:
 
-        for id, lm in enumerate(result.multi_hand_landmarks[0].landmark):
-            #print(h,w)
-            cx,cy = int(lm.x * w), int(lm.y * h)
-            print(cx,cy)
-            #cv2.circle(img, (cx,cy), 3, (255, 0, 255))
-            if id==8:
-                return Coordinates(**{"for_x": cx, "for_y": cy})
+            for id, lm in enumerate(result.multi_hand_landmarks[0].landmark):
+                h,w = resolution()
+                #print(h,w)
+                cx,cy = int(lm.x * w), int(lm.y * h)
+                #cv2.circle(img, (cx,cy), 3, (255, 0, 255))
+                if id==8:
+                    return Coordinates(**{"for_x": cx, "for_y":cy })
         #cv2.imshow("Hand treaking", img)
->>>>>>> fa95739 (0.0.2.2)
-    cv2.waitKey(1)
+        cv2.waitKey(1)
